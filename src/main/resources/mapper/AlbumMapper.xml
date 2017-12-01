@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.night.blog.dao.AlbumDao">
+    <resultMap id="PhotoResult" type="Album">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="createDate" column="createDate"/>
+        <collection property="photographs" column="id" select="com.night.blog.dao.PhotographDao.findByPhotoId"></collection>
+    </resultMap>
+    <select id="findAll" resultMap="PhotoResult">
+        select * from t_photo
+    </select>
+    <select id="findByPage" parameterType="Integer" resultMap="PhotoResult">
+        select * from t_photo limit #{startPos},#{pageSize}
+    </select>
+    <select id="findCount" resultType="Long">
+        select count(*) from t_photo
+    </select>
+</mapper>
