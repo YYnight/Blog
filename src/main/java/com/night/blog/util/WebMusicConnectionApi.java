@@ -1,6 +1,7 @@
 package com.night.blog.util;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -37,11 +38,25 @@ import java.util.Map;
         };*/
 public class WebMusicConnectionApi {
 
-    public static UrlParamPair searchMusicDetail(String id){
+    public static UrlParamPair searchMusicUrl(String id){
         UrlParamPair upp = new UrlParamPair();
         upp.addPara("ids","["+id+"]");
         upp.addPara("br",999000);
-        upp.addPara("csrf_tiken","");
+        upp.addPara("csrf_token","");
+        return upp;
+    }
+    /**
+     * 得到歌曲详情
+     */
+    public static UrlParamPair searchMusicDetail(String id){
+        UrlParamPair upp = new UrlParamPair();
+        JSONArray array = new JSONArray();
+        JSONObject obj = new JSONObject();
+        obj.put("id",id);
+        array.add(obj);
+        upp.addPara("c",array.toJSONString());
+        upp.addPara("ids","["+id+"]");
+        upp.addPara("csrf_token","");
         return upp;
     }
 
@@ -85,7 +100,7 @@ public class WebMusicConnectionApi {
      * @param req_str
      * @return
      */
-    public static JSONObject getResponse(String url, String req_str){
+    public static JSONObject getResponse(String url, String req_str) {
         Connection.Response response = null;
         try {
             response = Jsoup.connect(url)
@@ -105,7 +120,7 @@ public class WebMusicConnectionApi {
                     .timeout(10000)
                     .execute();
             return (JSONObject) JSON.parse(response.body());
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

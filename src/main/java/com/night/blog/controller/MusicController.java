@@ -43,8 +43,20 @@ public class MusicController {
 
     @GetMapping("/findMusicById")
     public Object findMusicById(@RequestParam("id")String id){
-        UrlParamPair upp = WebMusicConnectionApi.searchMusicDetail(id);
-        String req_str = upp.getParas().toJSONString();
-        return WebMusicConnectionApi.getResponse(URLConstants.findMusicByIdURL,req_str);
+        UrlParamPair detailUpp = WebMusicConnectionApi.searchMusicDetail(id);
+        String detail_req_str = detailUpp.getParas().toJSONString();
+        UrlParamPair urlUpp = WebMusicConnectionApi.searchMusicUrl(id);
+        String url_req_str = urlUpp.getParas().toJSONString();
+        JSONObject musicDetail = WebMusicConnectionApi.getResponse(URLConstants.findMusicDetailByIdURL,detail_req_str);
+        JSONObject musicUrl = WebMusicConnectionApi.getResponse(URLConstants.findMusicByIdURL,url_req_str);
+        JSONObject response = new JSONObject();
+        JSONObject data = new JSONObject();
+        response.put("code",200);
+        data.put("name",((JSONObject)musicDetail.getJSONArray("songs").get(0)).getString("name"));
+        data.put("author",((JSONObject)((JSONObject)musicDetail.getJSONArray("songs").get(0)).getJSONArray("ar").get(0)).getString("name"));
+        data.put("picUrl",((JSONObject)musicDetail.getJSONArray("songs").get(0)).getJSONObject("al").getString("picUrl"));
+        data.put("musicUrl",((JSONObject)musicUrl.getJSONArray("data").get(0)).getString("url"));
+        response.put("data",data);
+        return response;
     }
 }
