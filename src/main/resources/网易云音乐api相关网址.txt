@@ -1,0 +1,6 @@
+https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e6%90%9c%e7%b4%a2
+
+https://github.com/Binaryify/NeteaseCloudMusicApi/blob/master/util/crypto.js
+
+https://github.com/MiChongGET/CloudMusicApi/blob/master/src/core/Demo3.java
+
