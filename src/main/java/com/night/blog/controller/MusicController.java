@@ -59,4 +59,18 @@ public class MusicController {
         response.put("data",data);
         return response;
     }
+
+    @GetMapping("/findSingers")
+    public Object findHotSingers(){
+        UrlParamPair upp = WebMusicConnectionApi.getHotSingers();
+        String req_str = upp.getParas().toJSONString();
+        return WebMusicConnectionApi.getResponse(URLConstants.findHotSingersURL,req_str);
+    }
+
+    @GetMapping("/findMusicByName")
+    public Object findMusicByName(@RequestParam("name")String name){
+        UrlParamPair upp = WebMusicConnectionApi.SearchMusicList(name,"1");
+        String req_str = upp.getParas().toJSONString();
+        return WebMusicConnectionApi.getResponse(URLConstants.searchURL,req_str);
+    }
 }
